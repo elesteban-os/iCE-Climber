@@ -39,5 +39,6 @@ void *acceptServerSocket(void *args);
 void *readClient(void *args);
 void sendMessage(char message[], int client);
 void notifyClients(char message[], int excludeClient);
+void consoleGame();
 
 #endif // server_h

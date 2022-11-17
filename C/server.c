@@ -67,6 +67,7 @@ void *acceptServerSocket(void *args) {
     }
 }
 
+// Notificar mensaje a todos los clientes.
 void notifyClients(char message[], int excludeClient) {
     char messageT[1024];
     char clientNum[10];
@@ -129,6 +130,71 @@ void sendMessage(char message[], int client) {
     int error = send(clients[client], message, strlen(message), 0);
 }
 
+void createObstacle() {
+    int piso = 0;
+    int obstaculo = 0;
+    printf("En cual piso?\n> ");
+    scanf("%d", &piso);
+
+    if ((0 < piso) && (piso < 20)) {
+        printf("Cual obstaculo?\n");
+        printf("1. Foca\n");
+        printf("2. Ave\n");
+        printf("3. Hielo\n");
+        printf("> ");
+        scanf("%d", &obstaculo);    
+    } 
+
+    if (((0 < obstaculo) && (obstaculo < 4)) && ((0 < piso) && (piso < 20))) {
+        // Escribir mensaje y enviarlo
+        printf("Obstaculo enviado\n");
+    } else {
+        printf("No entendi la entrada\n");
+    }
+}
+
+void createFruit() {
+    int fruta = 0;
+
+    printf("Cual fruta?\n");
+    printf("1. Naranja\n");
+    printf("2. Banano\n");
+    printf("3. Berenjena\n");
+    printf("4. Lechuga\n");
+    printf("> ");
+    scanf("%d", &fruta);  
+
+    if ((0 < fruta) && (fruta < 5)) {
+        // Escribir mensaje y enviarlo
+        printf("Fruta enviada\n");
+    } else {
+        printf("No entendi la entrada\n");
+    }
+
+}
+
+void consoleGame() {
+    printf("----------------------------------\n");
+    printf("Consola de comandos de iCE-Climber\n");
+    printf("----------------------------------\n");
+    int action;
+    while(serverStatus) {
+        printf("----------------------\n");
+        printf("Selecciona una accion:\n");
+        printf("1. Crear obstaculo\n");
+        printf("2. Crear fruta/verdura\n");
+        printf("> ");
+        scanf("%d", &action);
+        printf("\n");
+        switch (action) {
+            case 1: createObstacle(); break;
+            case 2: createFruit(); break;
+            default: printf("No entendi la entrada\n"); break;
+        }
+        while(getchar() != '\n'); 
+    }
+}
+
 // Funcion para inicializar serversocket, aceptar clientes y escucharlos.
 int startServer() {
     wsaCreate();
@@ -143,7 +209,7 @@ int startServer() {
                 
     // memset(&lastMessage, 0, sizeof(lastMessage));
     printf("Server started\n");
-    while(1){};
+    consoleGame();
     return 0;
 }
 

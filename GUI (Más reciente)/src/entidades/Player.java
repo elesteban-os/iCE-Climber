@@ -14,18 +14,34 @@ public class Player extends Entidades{
     boolean Condicion = true;
     boolean posAnterior = true;
 
+    public  int screenX;
+    public final int screenY;
+    int playerX;
     public Player(GamePanel gp, KeyHandler keyH){
         this.gp = gp;
         this.keyH = keyH;
+
+        screenX = gp.screenWidth/2 - (gp.tileSize/2);
+        screenY = gp.screenHeight/2 - (gp.tileSize/2);
+
+
+        solidArea = new Rectangle();
+        solidArea.x = 8;
+        solidArea.y = 16;
+        solidArea.width = 32;
+        solidArea.height = 32;
+
         setDefaultValues();
         getPlayerImage();
     }
 
     public void setDefaultValues(){
-        x=100;
-        y=500;
+        worldX=gp.tileSize*7;//Posiciones del jugador en el mapa
+        worldY=gp.tileSize*35-50;
+        //playerX = gp.tileSize*35-40;
         speed = 4;
         direction = "idle";
+
 
     }
 
@@ -76,23 +92,39 @@ public class Player extends Entidades{
 
     public void update(){
 
-        if (keyH.upPressed == true){
+        //Evaluar colisiones.
+        collisionOn = false;
+        gp.cChecker.checkTile(this);
 
-            if(Condicion==true){
+        if (keyH.upPressed == true){//Salto
+
+            if(Condicion==true && !collisionOn){
                 direction = "up";
                 Condicion=false;
+
                 Thread t1 = new Thread(new Runnable() {
                     @Override
                     public void run() {
+                        int memory=0;
                         for(int i=0; i<=50; i++){
-                            y -= speed;
-                            //repaint();
+                            worldY -= speed;
+                            /**if(collisionOn == true){
+                                i=100;
+                                //worldY += 5;
+                                break;
+                            }*/
                             mimir(10);
                         }
-                        mimir(1);
+                        mimir(10);
+                        collisionOn=false;
                         for(int i=0; i<=50; i++){
-                            y += speed;
-                            //repaint();
+
+                            /**if(collisionOn == true){
+                                i=100;
+                                worldY -= speed;
+                                break;
+                            }*/
+                            worldY += speed;
                             mimir(10);
                         }
                         direction = "idle";
@@ -103,28 +135,38 @@ public class Player extends Entidades{
                 t1.start();
             }
         }
-        else if(keyH.leftPressed==true){
+        else if(keyH.leftPressed==true){//Movimiento a la izquierda
             //System.out.println("was here");
             posAnterior = true;
-            x -= speed;
-            direction = "left";
+            if(collisionOn == false){
+            worldX -= speed;
+            direction = "left";}
+
         }
-        else if(keyH.rightPressed==true){
+        else if(keyH.rightPressed==true){//Movimiento a la derecha
             posAnterior = false;
+            if(collisionOn == false){
+            worldX += speed;
             direction = "right";
-            x += speed;
+            }
+
         }
-        else if(keyH.shootPressed){
+        else if(keyH.shootPressed){//Accion de disparo
             if(posAnterior){
                 direction = "shootLeft";
             }else{
                 direction = "shootRight";
             }
 
-        }
-        else{
+        } else if(keyH.downPressed){//Movimiento hacia abajo
             direction = "idle";
+            //worldY += speed;
         }
+
+
+
+
+
 
         spriteCounter++;
 
@@ -251,7 +293,7 @@ public class Player extends Entidades{
                 break;
 
         }
-        g2.drawImage(image, x,y, 65,65, null);
+        g2.drawImage(image, worldX,screenY, gp.tileSize,gp.tileSize, null);
 
 
     }

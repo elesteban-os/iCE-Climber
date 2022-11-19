@@ -1,10 +1,11 @@
 package entidades;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Entidades {//Superclase para los jugadores y monstruos que aparecen en el juego
 
-    public int x, y;
+    public int worldX, worldY;
     public int speed;
 
     public BufferedImage up1, up2,up3, up4, up5, up6,
@@ -15,5 +16,7 @@ public class Entidades {//Superclase para los jugadores y monstruos que aparecen
 
     public int spriteCounter = 0;
     public int spriteNum = 1;
+    public Rectangle solidArea;
+    public boolean collisionOn = false;
 
 }

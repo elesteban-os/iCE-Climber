@@ -1,6 +1,7 @@
 package javaGui;
 
 import entidades.Player;
+import tile.TileManager;
 
 import javax.swing.JPanel;
 import java.awt.*;
@@ -10,22 +11,27 @@ public class GamePanel extends JPanel implements Runnable{
 
     final int originalTileSize = 16;//16x16 tile
     final int scale = 3;
+
     public int tileSize = originalTileSize*scale;//48x48 tile
+    public final int maxScreenCol = 16;
+    public final int maxScreenRow = 12;
+    public final int screenWidth = tileSize*maxScreenCol;//768 pixels
+    public final int screenHeight = tileSize*maxScreenRow;//576 pixels
 
-
-
-    final int maxScreenCol = 16;
-    final int maxScreenRow = 12;
-    final int screenWidth = tileSize*maxScreenCol;//768 pixels
-    final int screenHeight = tileSize*maxScreenRow;//576 pixels
+    //Ajustes del mapa del juego
+    public final int maxWorldCol = 16;//33
+    public final int maxWorldRow = 36;//16
+    public final int worldWidth = tileSize*maxWorldCol;
+    public final int worldHeight = tileSize*maxWorldRow;
 
     //Frames Per Second (Imágenes por Segundo)
     int FPS = 60;
 
-
+    TileManager tileM = new TileManager(this);
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
-    Player player = new Player(this,keyH);
+    public CollisionChekcer cChecker = new CollisionChekcer(this);
+    public Player player = new Player(this,keyH);
     //Thread jump;
 
     //Se establece la posición default del jugador
@@ -139,6 +145,7 @@ public class GamePanel extends JPanel implements Runnable{
         //g2.setColor(Color.white);
 
         //g2.fillRect(playerX,playerY,tileSize,tileSize);
+        tileM.draw(g2);
         player.draw(g2);
 
         g2.dispose();//Permite desacerse de ciertas cosas de la interfaz para optimizar el rendimiento y liberar memoria.

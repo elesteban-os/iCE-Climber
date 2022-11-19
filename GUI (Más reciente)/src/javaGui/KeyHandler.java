@@ -9,10 +9,6 @@ public class KeyHandler implements KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-        int code = e.getKeyCode();
-        if(code == KeyEvent.VK_W){
-            upPressed = true;
-        }
     }
 
     @Override
@@ -22,9 +18,9 @@ public class KeyHandler implements KeyListener {
         if(code== KeyEvent.VK_W){
             upPressed = true;
         }
-        //if(code== KeyEvent.VK_S){
-         //   downPressed = true;
-        //}
+        if(code== KeyEvent.VK_S){
+            downPressed = true;
+        }
         if(code== KeyEvent.VK_A){
             leftPressed = true;
         }
@@ -43,9 +39,9 @@ public class KeyHandler implements KeyListener {
         if(code== KeyEvent.VK_W){
             upPressed = false;
         }
-        //if(code== KeyEvent.VK_S){
-          //  downPressed = false;
-        //}
+        if(code== KeyEvent.VK_S){
+            downPressed = false;
+        }
         if(code== KeyEvent.VK_A){
             leftPressed = false;
         }

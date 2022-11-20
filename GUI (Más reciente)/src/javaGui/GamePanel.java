@@ -1,6 +1,7 @@
 package javaGui;
 
 import entidades.Player;
+import object.SuperObject;
 import tile.TileManager;
 
 import javax.swing.JPanel;
@@ -10,7 +11,7 @@ public class GamePanel extends JPanel implements Runnable{
     //Ajustes de pantalla
 
     final int originalTileSize = 16;//16x16 tile
-    final int scale = 3;
+    final int scale = 4;
 
     public int tileSize = originalTileSize*scale;//48x48 tile
     public final int maxScreenCol = 16;
@@ -19,8 +20,8 @@ public class GamePanel extends JPanel implements Runnable{
     public final int screenHeight = tileSize*maxScreenRow;//576 pixels
 
     //Ajustes del mapa del juego
-    public final int maxWorldCol = 16;//33
-    public final int maxWorldRow = 36;//16
+    public final int maxWorldCol = 16;//16
+    public final int maxWorldRow = 41;//36
     public final int worldWidth = tileSize*maxWorldCol;
     public final int worldHeight = tileSize*maxWorldRow;
 
@@ -31,8 +32,13 @@ public class GamePanel extends JPanel implements Runnable{
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
     public CollisionChekcer cChecker = new CollisionChekcer(this);
+    public AssetSetter aSetter = new AssetSetter(this);
     public Player player = new Player(this,keyH);
+    public SuperObject obj[]= new SuperObject[116];
+
     //Thread jump;
+
+
 
     //Se establece la posición default del jugador
     int playerX = 384;
@@ -49,6 +55,11 @@ public class GamePanel extends JPanel implements Runnable{
         this.addKeyListener(keyH);
         this.setFocusable(true);
     }
+
+    public void setupGame(){
+        aSetter.setObject();
+    }
+
     public void startGameThread(){
         gameThread = new Thread(this);//Se instancia un hilo
         gameThread.run();
@@ -146,6 +157,14 @@ public class GamePanel extends JPanel implements Runnable{
 
         //g2.fillRect(playerX,playerY,tileSize,tileSize);
         tileM.draw(g2);
+
+        //Object
+        for(int i =0; i<obj.length; i++){
+            if(obj[i] != null){
+                obj[i].draw(g2,this);
+            }
+        }
+
         player.draw(g2);
 
         g2.dispose();//Permite desacerse de ciertas cosas de la interfaz para optimizar el rendimiento y liberar memoria.

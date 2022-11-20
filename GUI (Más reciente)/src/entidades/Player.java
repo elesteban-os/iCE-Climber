@@ -36,10 +36,10 @@ public class Player extends Entidades{
     }
 
     public void setDefaultValues(){
-        worldX=gp.tileSize*7;//Posiciones del jugador en el mapa
+        worldX=gp.tileSize*2;//Posiciones del jugador en el mapa
         worldY=gp.tileSize*35-50;
         //playerX = gp.tileSize*35-40;
-        speed = 4;
+        speed = 3;
         direction = "idle";
 
 
@@ -94,6 +94,10 @@ public class Player extends Entidades{
 
         //Evaluar colisiones.
         collisionOn = false;
+        collisionOnBot = false;
+        collisionOnLeft=false;
+        collisionOnRight=false;
+        collisionOnTop=false;
         gp.cChecker.checkTile(this);
 
         if (keyH.upPressed == true){//Salto
@@ -116,14 +120,13 @@ public class Player extends Entidades{
                             mimir(10);
                         }
                         mimir(10);
-                        collisionOn=false;
+
                         for(int i=0; i<=50; i++){
 
-                            /**if(collisionOn == true){
+                            if(collisionOnBot == true){
                                 i=100;
-                                worldY -= speed;
                                 break;
-                            }*/
+                            }
                             worldY += speed;
                             mimir(10);
                         }
@@ -138,16 +141,17 @@ public class Player extends Entidades{
         else if(keyH.leftPressed==true){//Movimiento a la izquierda
             //System.out.println("was here");
             posAnterior = true;
-            if(collisionOn == false){
-            worldX -= speed;
-            direction = "left";}
+            if(collisionOnLeft == false){
+                worldX -= speed;
+                direction = "left";
+            }
 
         }
         else if(keyH.rightPressed==true){//Movimiento a la derecha
             posAnterior = false;
-            if(collisionOn == false){
-            worldX += speed;
-            direction = "right";
+            if(collisionOnRight == false){
+                worldX += speed;
+                direction = "right";
             }
 
         }
@@ -159,14 +163,18 @@ public class Player extends Entidades{
             }
 
         } else if(keyH.downPressed){//Movimiento hacia abajo
-            direction = "idle";
-            //worldY += speed;
+            if(collisionOnBot == false){
+                direction = "idle";
+                //worldY += speed;
+            }
+
+        }else{
+            if(collisionOnBot == false && direction!="up"){
+                direction = "idle";
+                worldY += speed;
+            }
+
         }
-
-
-
-
-
 
         spriteCounter++;
 
@@ -199,9 +207,8 @@ public class Player extends Entidades{
 
         switch (direction){
             case "idle":
-                if(spriteNum==1 || spriteNum==2 || spriteNum==3 || spriteNum==4 || spriteNum==5){
                 image = idle;
-                }
+
                 break;
             case "shootLeft":
                 if(spriteNum==1){

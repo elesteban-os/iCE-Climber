@@ -17,6 +17,11 @@ public class Entidades {//Superclase para los jugadores y monstruos que aparecen
     public int spriteCounter = 0;
     public int spriteNum = 1;
     public Rectangle solidArea;
+    public boolean collisionOnBot = false;
+    public boolean collisionOnRight = false;
+    public boolean collisionOnLeft = false;
+    public boolean collisionOnTop = false;
     public boolean collisionOn = false;
+
 
 }

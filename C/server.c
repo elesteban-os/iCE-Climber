@@ -136,7 +136,7 @@ void createObstacle() {
     printf("En cual piso?\n> ");
     scanf("%d", &piso);
 
-    if ((0 < piso) && (piso < 20)) {
+    if ((0 < piso) && (piso < 10)) {
         printf("Cual obstaculo?\n");
         printf("1. Foca\n");
         printf("2. Ave\n");
@@ -146,8 +146,16 @@ void createObstacle() {
     } 
 
     if (((0 < obstaculo) && (obstaculo < 4)) && ((0 < piso) && (piso < 20))) {
-        // Escribir mensaje y enviarlo
+        char mensage[5];
+        mensage[0] = 1 + '0';
+        mensage[1] = ',';
+        mensage[2] = obstaculo + '0';
+        mensage[3] = ',';
+        mensage[4] = piso + '0';
+        mensage[5] = '\0';
+        notifyClients(mensage, 10);
         printf("Obstaculo enviado\n");
+        
     } else {
         printf("No entendi la entrada\n");
     }
@@ -165,7 +173,12 @@ void createFruit() {
     scanf("%d", &fruta);  
 
     if ((0 < fruta) && (fruta < 5)) {
-        // Escribir mensaje y enviarlo
+        char mensage[5];
+        mensage[0] = 2 + '0';
+        mensage[1] = ',';
+        mensage[2] = fruta + '0';
+
+        notifyClients(mensage, 10);
         printf("Fruta enviada\n");
     } else {
         printf("No entendi la entrada\n");

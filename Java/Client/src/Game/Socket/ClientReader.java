@@ -6,8 +6,10 @@ import java.util.Arrays;
 
 public class ClientReader implements Runnable {
     private BufferedInputStream input;
-    byte byteBuffer[] = new byte[1024];
-    String message;
+    private byte byteBuffer[] = new byte[1024];
+    private String message;
+    private Interpreter interpreter = new Interpreter();
+    private int actions[];
     
     public ClientReader(BufferedInputStream input){
         this.input = input;
@@ -18,12 +20,12 @@ public class ClientReader implements Runnable {
             try{
                 input.read(byteBuffer);
                 message = new String(byteBuffer);
+                actions = interpreter.readMessage(message);
+                System.out.println(message);
+                Arrays.fill(byteBuffer, (byte)0); 
             } catch (IOException io){
                 System.out.println("No se pudo leer el texto.");
             }
-    
-            System.out.println(message);
-            Arrays.fill(byteBuffer, (byte)0); 
         }
     }
 
